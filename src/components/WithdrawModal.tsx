@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { X, CreditCard, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from '../contexts/LocationContext';
-import { useLocation } from '../contexts/LocationContext';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
