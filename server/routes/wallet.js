@@ -54,6 +54,7 @@ router.post('/topup', authenticateToken, async (req, res) => {
       status: 'completed',
       type: 'topup',
       currency
+      currency
     });
     
     await transaction.save();
@@ -62,6 +63,7 @@ router.post('/topup', authenticateToken, async (req, res) => {
       message: 'Balance topped up successfully',
       newBalance: user.balance,
       usdcAmount,
+      currency
       currency
     });
   } catch (error) {
@@ -100,6 +102,7 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
       status: 'completed',
       type: 'withdrawal',
       currency
+      currency
     });
     
     await transaction.save();
@@ -108,6 +111,7 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
       message: 'Withdrawal initiated successfully',
       newBalance: user.balance,
       localAmount: amount * (currency === 'USD' ? 1 : 83.33),
+      currency
       currency
     });
   } catch (error) {
