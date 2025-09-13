@@ -383,17 +383,6 @@ const PricingPage: React.FC = () => {
               ) : (
                 <span>Upgrade to Premium</span>
               )}
-              disabled={premiumLoading}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center space-x-2"
-            >
-              {premiumLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Processing...</span>
-                </>
-              ) : (
-                <span>Upgrade to Premium</span>
-              )}
             </button>
           </div>
         </div>

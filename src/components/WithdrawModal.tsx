@@ -40,7 +40,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, onSucces
       await axios.post(`${API_URL}/wallet/withdraw`, {
         amount: parseFloat(amount),
         currency: currency
-        currency: currency
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
