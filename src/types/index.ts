@@ -8,6 +8,8 @@ export interface User {
   createdAt: string;
   country?: 'US' | 'IN';
   transactionCount?: number;
+  country?: 'US' | 'IN';
+  transactionCount?: number;
 }
 
 export interface Transaction {
@@ -21,6 +23,9 @@ export interface Transaction {
   status: 'pending' | 'completed' | 'failed';
   type: 'sent' | 'received';
   createdAt: string;
+  fee?: number;
+  invoiceId?: string;
+  currency?: 'USD' | 'INR';
   fee?: number;
   invoiceId?: string;
   currency?: 'USD' | 'INR';
@@ -38,6 +43,19 @@ export interface AuthContextType {
 export interface PaymentData {
   recipientEmail: string;
   amount: number;
+  currency?: 'USD' | 'INR';
+}
+
+export interface Invoice {
+  id: string;
+  transactionId: string;
+  amount: number;
+  currency: 'USD' | 'INR';
+  fee: number;
+  fromEmail: string;
+  toEmail: string;
+  createdAt: string;
+  status: 'paid' | 'pending';
   currency?: 'USD' | 'INR';
 }
 
