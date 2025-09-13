@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, CreditCard, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from '../contexts/LocationContext';
+import { useLocation } from '../contexts/LocationContext';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
@@ -24,6 +25,11 @@ const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onSuccess }) =
   const currencySymbol = currency === 'USD' ? '$' : '₹';
   const conversionRate = currency === 'USD' ? 1 : 83.33;
   const stablecoinRate = currency === 'USD' ? 1 : 0.012; // Same number of stablecoins for both currencies
+  const { currency } = useLocation();
+
+  const currencySymbol = currency === 'USD' ? '$' : '₹';
+  const conversionRate = currency === 'USD' ? 1 : 83.33;
+  const stablecoinRate = currency === 'USD' ? 1 : 0.012; // Same number of stablecoins for both currencies
 
   const quickAmounts = currency === 'USD' ? [10, 25, 50, 100] : [100, 500, 1000, 2500];
 
@@ -37,6 +43,7 @@ const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onSuccess }) =
       // Actually add funds to user's account
       await axios.post(`${API_URL}/wallet/topup`, {
         amount: parseFloat(amount),
+        currency: currency
         currency: currency
       }, {
         headers: { Authorization: `Bearer ${token}` }

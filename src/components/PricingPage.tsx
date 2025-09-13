@@ -3,9 +3,13 @@ import { Check, Calculator, CreditCard, Zap, Star, Shield, TrendingUp } from 'lu
 import { useTheme } from '../contexts/ThemeContext';
 import { useLocation } from '../contexts/LocationContext';
 import { usePremium } from '../contexts/PremiumContext';
+import { useLocation } from '../contexts/LocationContext';
+import { usePremium } from '../contexts/PremiumContext';
 
 const PricingPage: React.FC = () => {
   const { theme } = useTheme();
+  const { currency } = useLocation();
+  const { upgradeToPremium, loading: premiumLoading } = usePremium();
   const { currency } = useLocation();
   const { upgradeToPremium, loading: premiumLoading } = usePremium();
   const [calculatorAmount, setCalculatorAmount] = useState<string>('1000');
@@ -14,9 +18,13 @@ const PricingPage: React.FC = () => {
   const currencySymbol = currency === 'USD' ? '$' : '₹';
   const conversionRate = currency === 'USD' ? 1 : 83.33;
   
+  const currencySymbol = currency === 'USD' ? '$' : '₹';
+  const conversionRate = currency === 'USD' ? 1 : 83.33;
+  
   const calculateFee = (amount: number) => {
     const usdAmount = currency === 'USD' ? amount : amount / conversionRate;
     if (usdAmount <= 5) return 0; // Free tier
+    if (usdAmount <= 56) return amount * 0.005; // 0.5%
     if (usdAmount <= 56) return amount * 0.005; // 0.5%
     return amount * 0.015; // 1.5% (1% + 0.5% tax)
   };
@@ -120,6 +128,7 @@ const PricingPage: React.FC = () => {
             fee={`${currencySymbol}0`}
             features={[
               "No transaction fees",
+              "Maximum 5 transactions",
               "Maximum 5 transactions",
               "Basic email support",
               "Standard processing time",
@@ -381,6 +390,17 @@ const PricingPage: React.FC = () => {
               ) : (
                 <span>Upgrade to Premium</span>
               )}
+              disabled={premiumLoading}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center space-x-2"
+            >
+              {premiumLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <span>Upgrade to Premium</span>
+              )}
             </button>
           </div>
         </div>
@@ -447,6 +467,74 @@ const PricingPage: React.FC = () => {
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 Yes, we offer a 14-day free trial for all Premium features. No credit card required.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tax Compliance Disclaimer */}
+        <div className={`rounded-2xl border p-8 mt-8 ${
+          theme === 'dark' 
+            ? 'bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border-yellow-800' 
+            : 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200'
+        }`}>
+          <h2 className={`text-2xl font-bold mb-6 text-center ${
+            theme === 'dark' ? 'text-white' : 'text-gray-900'
+          }`}>
+            Tax Compliance & Platform Guidance
+          </h2>
+          
+          <div className={`p-6 rounded-lg mb-6 ${
+            theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/70'
+          }`}>
+            <p className={`text-center mb-6 ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+            }`}>
+              This platform provides compliance support integration but does not handle taxes directly.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className={`p-4 rounded-lg ${
+                theme === 'dark' ? 'bg-blue-900/30' : 'bg-blue-50'
+              }`}>
+                <h3 className={`font-semibold mb-3 flex items-center ${
+                  theme === 'dark' ? 'text-blue-300' : 'text-blue-800'
+                }`}>
+                  🇺🇸 U.S. Users
+                </h3>
+                <p className={`text-sm ${
+                  theme === 'dark' ? 'text-blue-200' : 'text-blue-700'
+                }`}>
+                  Stablecoins are taxed under capital gains rules. For 1:1 redemptions (e.g., 1 USDC = $1), 
+                  tax impact is typically negligible. Any gains are subject to short-term (ordinary income rates: 10%-37%) 
+                  or long-term capital gains tax (0%, 15%, or 20% based on income).
+                </p>
+              </div>
+              
+              <div className={`p-4 rounded-lg ${
+                theme === 'dark' ? 'bg-green-900/30' : 'bg-green-50'
+              }`}>
+                <h3 className={`font-semibold mb-3 flex items-center ${
+                  theme === 'dark' ? 'text-green-300' : 'text-green-800'
+                }`}>
+                  🇮🇳 Indian Users
+                </h3>
+                <p className={`text-sm ${
+                  theme === 'dark' ? 'text-green-200' : 'text-green-700'
+                }`}>
+                  Stablecoins are classified as Virtual Digital Assets (VDA) with a flat 30% tax on profits 
+                  plus 1% TDS on transfers above specified thresholds.
+                </p>
+              </div>
+            </div>
+            
+            <div className={`mt-6 p-4 rounded-lg text-center ${
+              theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-50'
+            }`}>
+              <p className={`text-sm ${
+                theme === 'dark' ? 'text-purple-200' : 'text-purple-700'
+              }`}>
+                Our platform can help users auto-track cost basis and generate tax reports to simplify compliance and adoption.
               </p>
             </div>
           </div>

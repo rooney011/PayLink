@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, CreditCard, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from '../contexts/LocationContext';
+import { useLocation } from '../contexts/LocationContext';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
@@ -28,6 +29,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, onSucces
 
   const currencySymbol = currency === 'USD' ? '$' : '₹';
   const conversionRate = currency === 'USD' ? 1 : 83.33;
+  const { currency } = useLocation();
+
+  const currencySymbol = currency === 'USD' ? '$' : '₹';
+  const conversionRate = currency === 'USD' ? 1 : 83.33;
 
   const handleWithdraw = async () => {
     setLoading(true);
@@ -39,6 +44,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, onSucces
       // Actually deduct funds from user's account
       await axios.post(`${API_URL}/wallet/withdraw`, {
         amount: parseFloat(amount),
+        currency: currency
         currency: currency
       }, {
         headers: { Authorization: `Bearer ${token}` }
