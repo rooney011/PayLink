@@ -28,10 +28,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, onSucces
 
   const currencySymbol = currency === 'USD' ? '$' : '₹';
   const conversionRate = currency === 'USD' ? 1 : 83.33;
-  const { currency } = useLocation();
-
-  const currencySymbol = currency === 'USD' ? '$' : '₹';
-  const conversionRate = currency === 'USD' ? 1 : 83.33;
 
   const handleWithdraw = async () => {
     setLoading(true);

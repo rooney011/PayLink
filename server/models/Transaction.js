@@ -47,19 +47,6 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     enum: ['USD', 'INR'],
     default: 'USD'
-  },
-  fee: {
-    type: Number,
-    default: 0
-  },
-  invoiceId: {
-    type: String,
-    default: null
-  },
-  currency: {
-    type: String,
-    enum: ['USD', 'INR'],
-    default: 'USD'
   }
 }, {
   timestamps: true

@@ -102,7 +102,6 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
       status: 'completed',
       type: 'withdrawal',
       currency
-      currency
     });
     
     await transaction.save();
@@ -111,7 +110,6 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
       message: 'Withdrawal initiated successfully',
       newBalance: user.balance,
       localAmount: amount * (currency === 'USD' ? 1 : 83.33),
-      currency
       currency
     });
   } catch (error) {

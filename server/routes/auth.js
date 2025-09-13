@@ -32,8 +32,6 @@ router.post('/register', async (req, res) => {
       balance: email === 'admin@paylink.com' ? 10000 : 
                email === 'premium@paylink.com' ? 5000 : 100, // Demo balances
       transactionCount: 0
-               email === 'premium@paylink.com' ? 5000 : 100, // Demo balances
-      transactionCount: 0
     });
 
     await user.save();

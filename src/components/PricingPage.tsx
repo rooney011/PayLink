@@ -3,21 +3,14 @@ import { Check, Calculator, CreditCard, Zap, Star, Shield, TrendingUp } from 'lu
 import { useTheme } from '../contexts/ThemeContext';
 import { useLocation } from '../contexts/LocationContext';
 import { usePremium } from '../contexts/PremiumContext';
-import { useLocation } from '../contexts/LocationContext';
-import { usePremium } from '../contexts/PremiumContext';
 
 const PricingPage: React.FC = () => {
   const { theme } = useTheme();
   const { currency } = useLocation();
   const { upgradeToPremium, loading: premiumLoading } = usePremium();
-  const { currency } = useLocation();
-  const { upgradeToPremium, loading: premiumLoading } = usePremium();
   const [calculatorAmount, setCalculatorAmount] = useState<string>('1000');
   const [isAnnual, setIsAnnual] = useState(false);
 
-  const currencySymbol = currency === 'USD' ? '$' : '₹';
-  const conversionRate = currency === 'USD' ? 1 : 83.33;
-  
   const currencySymbol = currency === 'USD' ? '$' : '₹';
   const conversionRate = currency === 'USD' ? 1 : 83.33;
   

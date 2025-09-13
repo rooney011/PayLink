@@ -44,7 +44,6 @@ const TopUpModal: React.FC<TopUpModalProps> = ({ isOpen, onClose, onSuccess }) =
       await axios.post(`${API_URL}/wallet/topup`, {
         amount: parseFloat(amount),
         currency: currency
-        currency: currency
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });

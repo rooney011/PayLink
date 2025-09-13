@@ -136,20 +136,6 @@ const Navbar: React.FC = () => {
               >
                 <Settings className="h-4 w-4" />
               </Link>
-              <Link
-                to="/profile"
-                className={`p-2 rounded-lg transition-colors duration-200 ${
-                  isActive('/profile')
-                    ? theme === 'dark'
-                      ? 'bg-emerald-900/30 text-emerald-400'
-                      : 'bg-emerald-50 text-emerald-600'
-                    : theme === 'dark' 
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                <Settings className="h-4 w-4" />
-              </Link>
               <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 {user.name}
               </div>

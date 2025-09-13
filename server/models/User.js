@@ -43,15 +43,6 @@ const userSchema = new mongoose.Schema({
   transactionCount: {
     type: Number,
     default: 0
-  },
-  country: {
-    type: String,
-    enum: ['US', 'IN'],
-    default: 'US'
-  },
-  transactionCount: {
-    type: Number,
-    default: 0
   }
 }, {
   timestamps: true
