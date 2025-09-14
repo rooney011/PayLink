@@ -88,13 +88,13 @@ const LandingPage: React.FC = () => {
                 <span>Start Sending</span>
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <button className={`px-8 py-4 font-semibold text-lg transition-colors duration-300 ${
+              {/* <button className={`px-8 py-4 font-semibold text-lg transition-colors duration-300 ${
                 theme === 'dark' 
                   ? 'text-emerald-400 hover:text-emerald-300' 
                   : 'text-emerald-700 hover:text-emerald-600'
               }`}>
                 Watch Demo
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

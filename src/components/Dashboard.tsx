@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
     if (transaction.invoiceId) {
       const invoice: Invoice = {
         id: transaction.invoiceId,
-        transactionId: transaction._id,
+        transactionId: transaction.transactionId || transaction._id,
         amount: transaction.amount,
         currency: transaction.currency || currency,
         fee: transaction.fee || 0,

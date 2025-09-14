@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Lock, Eye, Clock, Hash, Users, CheckCircle, AlertCircle } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
+
+const API_URL = 'http://localhost:5000/api';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  token: string; // Add this line
+  // other properties
+}
 
 interface BlockData {
   id: string;
@@ -18,15 +29,57 @@ interface BlockData {
 
 const BlockchainTransparency: React.FC = () => {
   const { theme } = useTheme();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [blocks, setBlocks] = useState<BlockData[]>([]);
   const [selectedBlock, setSelectedBlock] = useState<BlockData | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'confirmed' | 'pending'>('all');
+  const [realTimeData, setRealTimeData] = useState<any[]>([]);
 
   useEffect(() => {
-    generateMockBlocks();
+    fetchRealTimeData();
+    const interval = setInterval(fetchRealTimeData, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
   }, []);
+
+  const fetchRealTimeData = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/transactions`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setRealTimeData(response.data.transactions || []);
+      generateBlocksFromTransactions(response.data.transactions || []);
+    } catch (error) {
+      console.error('Error fetching real-time data:', error);
+      generateMockBlocks();
+    }
+  };
+
+  const generateBlocksFromTransactions = (transactions: any[]) => {
+    const blocks: BlockData[] = [];
+    const transactionsPerBlock = 5;
+    
+    for (let i = 0; i < Math.ceil(transactions.length / transactionsPerBlock); i++) {
+      const blockTransactions = transactions.slice(i * transactionsPerBlock, (i + 1) * transactionsPerBlock);
+      const timestamp = blockTransactions[0]?.createdAt || new Date().toISOString();
+      
+      blocks.push({
+        id: `block_${i + 1}`,
+        timestamp,
+        transactionCount: blockTransactions.length,
+        hash: `0x${Math.random().toString(16).substring(2, 66)}`,
+        previousHash: i === 0 ? '0x0000000000000000000000000000000000000000000000000000000000000000' : `0x${Math.random().toString(16).substring(2, 66)}`,
+        merkleRoot: `0x${Math.random().toString(16).substring(2, 66)}`,
+        status: 'confirmed',
+        size: Math.floor(Math.random() * 1000) + 500,
+        gasUsed: Math.floor(Math.random() * 100000) + 21000,
+        validator: `validator_${Math.floor(Math.random() * 10) + 1}`
+      });
+    }
+    
+    setBlocks(blocks.length > 0 ? blocks : generateMockBlocks());
+    setLoading(false);
+  };
 
   const generateMockBlocks = () => {
     const mockBlocks: BlockData[] = [];
@@ -45,8 +98,7 @@ const BlockchainTransparency: React.FC = () => {
         validator: `validator_${Math.floor(Math.random() * 10) + 1}`
       });
     }
-    setBlocks(mockBlocks);
-    setLoading(false);
+    return mockBlocks;
   };
 
   const formatHash = (hash: string) => `${hash.slice(0, 10)}...${hash.slice(-8)}`;

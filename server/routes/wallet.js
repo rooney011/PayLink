@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import Transaction from '../models/Transaction.js';
 import { authenticateToken } from '../middleware/auth.js';
 import blockchainService from '../utils/blockchain.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
@@ -45,6 +46,7 @@ router.post('/topup', authenticateToken, async (req, res) => {
 
     // Record transaction
     const transaction = new Transaction({
+      transactionId: `TXN-${uuidv4().substring(0, 8).toUpperCase()}`,
       fromEmail: 'system@paylink.com',
       toEmail: user.email,
       fromWallet: 'system',
@@ -53,8 +55,8 @@ router.post('/topup', authenticateToken, async (req, res) => {
       txHash: '0x' + Math.random().toString(16).substring(2, 66),
       status: 'completed',
       type: 'topup',
-      currency
-      currency
+      currency,
+      invoiceId: `INV-${uuidv4().substring(0, 8).toUpperCase()}`
     });
     
     await transaction.save();
@@ -63,7 +65,6 @@ router.post('/topup', authenticateToken, async (req, res) => {
       message: 'Balance topped up successfully',
       newBalance: user.balance,
       usdcAmount,
-      currency
       currency
     });
   } catch (error) {
@@ -93,6 +94,7 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
 
     // Record transaction
     const transaction = new Transaction({
+      transactionId: `TXN-${uuidv4().substring(0, 8).toUpperCase()}`,
       fromEmail: user.email,
       toEmail: 'system@paylink.com',
       fromWallet: user.walletAddress,
@@ -101,7 +103,8 @@ router.post('/withdraw', authenticateToken, async (req, res) => {
       txHash: '0x' + Math.random().toString(16).substring(2, 66),
       status: 'completed',
       type: 'withdrawal',
-      currency
+      currency,
+      invoiceId: `INV-${uuidv4().substring(0, 8).toUpperCase()}`
     });
     
     await transaction.save();

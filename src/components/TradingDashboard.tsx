@@ -180,6 +180,7 @@ const TradingDashboard: React.FC = () => {
             </div>
           </div>
           <TradingChart timeframe={timeframe} theme={theme} />
+          <TradingChart timeframe={timeframe} theme={theme} showAnalysis={true} />
         </div>
 
         {/* Market Insights */}

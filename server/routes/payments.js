@@ -81,6 +81,7 @@ router.post('/send', authenticateToken, async (req, res) => {
 
     // Create transactions for both users
     const senderTransaction = new Transaction({
+      transactionId: `TXN-${uuidv4().substring(0, 8).toUpperCase()}`,
       fromEmail: sender.email,
       toEmail: recipient.email,
       fromWallet: sender.walletAddress,
@@ -90,11 +91,12 @@ router.post('/send', authenticateToken, async (req, res) => {
       status: 'completed',
       type: 'sent',
       fee,
-      invoiceId,
+      invoiceId: invoiceId || `INV-${uuidv4().substring(0, 8).toUpperCase()}`,
       currency
     });
 
     const recipientTransaction = new Transaction({
+      transactionId: senderTransaction.transactionId,
       fromEmail: sender.email,
       toEmail: recipient.email,
       fromWallet: sender.walletAddress,
@@ -104,7 +106,7 @@ router.post('/send', authenticateToken, async (req, res) => {
       status: 'completed',
       type: 'received',
       fee,
-      invoiceId,
+      invoiceId: senderTransaction.invoiceId,
       currency
     });
 

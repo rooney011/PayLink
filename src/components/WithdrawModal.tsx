@@ -266,9 +266,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ isOpen, onClose, onSucces
             <p className="text-gray-600 mb-4">
               {currencySymbol}{(parseFloat(amount) * conversionRate).toFixed(2)} will be transferred to your bank account
             </p>
-            <div className="text-sm text-gray-500">
+            {/* <div className="text-sm text-gray-500">
               Processing time: 1-3 business days
-            </div>
+            </div> */}
           </div>
         )}
       </div>

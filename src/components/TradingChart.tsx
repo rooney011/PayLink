@@ -3,10 +3,13 @@ import React, { useEffect, useRef } from 'react';
 interface TradingChartProps {
   timeframe: '1D' | '7D' | '1M' | '3M' | '1Y';
   theme: 'light' | 'dark';
+  data?: number[];
+  showAnalysis?: boolean;
 }
 
-const TradingChart: React.FC<TradingChartProps> = ({ timeframe, theme }) => {
+const TradingChart: React.FC<TradingChartProps> = ({ timeframe, theme, data, showAnalysis = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const analysisCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -131,13 +134,99 @@ const TradingChart: React.FC<TradingChartProps> = ({ timeframe, theme }) => {
 
   }, [timeframe, theme]);
 
+  useEffect(() => {
+    if (!showAnalysis) return;
+    
+    const canvas = analysisCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    // Generate analysis data
+    const positiveData = [];
+    const negativeData = [];
+    for (let i = 0; i < 30; i++) {
+      positiveData.push(Math.random() * 100 + 50);
+      negativeData.push(Math.random() * 80 + 20);
+    }
+
+    // Clear canvas
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    // Draw positive trend (blue line)
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    positiveData.forEach((value, index) => {
+      const x = (rect.width / (positiveData.length - 1)) * index;
+      const y = rect.height - (value / 150) * rect.height;
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+    // Draw negative trend (red line)
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    negativeData.forEach((value, index) => {
+      const x = (rect.width / (negativeData.length - 1)) * index;
+      const y = rect.height - (value / 150) * rect.height;
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+  }, [showAnalysis, theme]);
+
   return (
-    <div className="relative w-full h-80">
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full"
-        style={{ width: '100%', height: '100%' }}
-      />
+    <div className="relative w-full">
+      <div className="h-80 mb-4">
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full"
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
+      {showAnalysis && (
+        <div className="h-40">
+          <h4 className={`text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+            Amount Analysis
+          </h4>
+          <canvas
+            ref={analysisCanvasRef}
+            className="w-full h-full"
+            style={{ width: '100%', height: '100%' }}
+          />
+          <div className="flex justify-center space-x-4 mt-2">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                Positive Volume
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                Negative Volume
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -145,11 +145,7 @@ export const LoginPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-4 text-center">
-            <p className={`text-sm ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
-              Demo accounts: admin@paylink.com (admin123), premium@paylink.com (premium123), user@test.com (test123)
-            </p>
-          </div>
+          
         </div>
       </div>
     </div>

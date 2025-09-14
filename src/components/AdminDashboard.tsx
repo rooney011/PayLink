@@ -221,7 +221,7 @@ const AdminDashboard: React.FC = () => {
                     }`}>
                       {transaction.type === 'sent' ? 
                         <ArrowUpRight className={`h-5 w-5 ${transaction.type === 'sent' ? 'text-red-600' : 'text-green-600'}`} /> :
-                        <ArrowDownLeft className={`h-5 w-5 ${transaction.type === 'sent' ? 'text-red-600' : 'text-green-600'}`} />
+                        <ArrowDownLeft className={`h-5 w-5 ${transaction.type === 'received' ? 'text-red-600' : 'text-green-600'}`} />
                       }
                     </div>
                     <div>

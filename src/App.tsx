@@ -75,13 +75,13 @@ function App() {
   return (
     <ThemeProvider>
       <LocationProvider>
-        <PremiumProvider>
-          <Router>
-            <AuthProvider>
+        <Router>
+          <AuthProvider>
+            <PremiumProvider>
               <AppContent />
-            </AuthProvider>
-          </Router>
-        </PremiumProvider>
+            </PremiumProvider>
+          </AuthProvider>
+        </Router>
       </LocationProvider>
     </ThemeProvider>
   );

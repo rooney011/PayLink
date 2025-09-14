@@ -12,6 +12,7 @@ export interface User {
 
 export interface Transaction {
   _id: string;
+  transactionId?: string;
   fromEmail: string;
   toEmail: string;
   fromWallet: string;

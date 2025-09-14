@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 const transactionSchema = new mongoose.Schema({
+  transactionId: {
+    type: String,
+    unique: true,
+    default: () => `TXN-${uuidv4().substring(0, 8).toUpperCase()}`
+  },
   fromEmail: {
     type: String,
     required: true
@@ -41,7 +47,7 @@ const transactionSchema = new mongoose.Schema({
   },
   invoiceId: {
     type: String,
-    default: null
+    default: () => `INV-${uuidv4().substring(0, 8).toUpperCase()}`
   },
   currency: {
     type: String,

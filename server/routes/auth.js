@@ -29,8 +29,7 @@ router.post('/register', async (req, res) => {
       password,
       walletAddress: wallet.address,
       privateKey: wallet.privateKey,
-      balance: email === 'admin@paylink.com' ? 10000 : 
-               email === 'premium@paylink.com' ? 5000 : 100, // Demo balances
+      balance: 0, // All new accounts start with zero balance
       transactionCount: 0
     });
 
